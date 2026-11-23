@@ -16,6 +16,7 @@ variable "key_name" {
 }
 
 variable "repo_url" {
+  default     = "https://github.com/Khay-concept/Clouddesk-Capstone-Group-1.git"
   description = "HTTPS URL of your GitHub repository"
   type        = string
 }

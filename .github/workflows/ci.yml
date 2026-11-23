@@ -1,29 +1,22 @@
-name: CloudDesk CI
+# CloudDesk IT Helpdesk
 
-on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+Full-stack IT Helpdesk and Ticket Management System built with **Python Flask**, **SQLAlchemy**, **Gunicorn**, **Nginx**, **Terraform**, **AWS EC2**, and **GitHub Actions CI/CD**.
 
-jobs:
-  test:
-    runs-on: ubuntu-latest
+## Live Deployment
+- **Application URL**: http://184.194.104.56
+- **Health Check Endpoint**: http://184.194.104.56/health
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+## Architecture Overview
+- **Frontend**: Responsive HTML5, CSS3, and Vanilla JavaScript dashboard with real-time KPI statistics, search, status/priority filtering, and modal ticket management.
+- **Backend & Database**: Python Flask REST API (`/api/tickets`, `/api/stats`, `/health`) backed by SQLAlchemy + SQLite (`clouddesk.db`) and served via Gunicorn (`systemd` service).
+- **Reverse Proxy & Cloud Infrastructure**: Nginx reverse proxy on Ubuntu 24.04 LTS (`t3.micro`) provisioned via Terraform (`terraform/`) with a static AWS Elastic IP (`184.194.104.56`) and security group rules for HTTP (80) and SSH (22).
+- **CI/CD Pipeline**: GitHub Actions (`.github/workflows/ci.yml`) automatically executes `pytest` on every push/PR and deploys verified `main` commits to AWS EC2 over SSH.
 
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-          cache: "pip"
+## Local Setup
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Run pytest suite
-        run: pytest -v
+```bash
+python -m venv venv
+source venv/Scripts/activate  # Windows Git Bash (or source venv/bin/activate on Linux/macOS)
+pip install -r requirements.txt
+pytest -v
+python run.py
