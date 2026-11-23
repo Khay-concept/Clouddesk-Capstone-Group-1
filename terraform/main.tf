@@ -111,3 +111,12 @@ resource "aws_instance" "clouddesk_server" {
     Name = "CloudDesk-Helpdesk-Server"
   }
 }
+
+resource "aws_eip" "clouddesk_eip" {
+  instance = aws_instance.clouddesk_server.id
+  domain   = "vpc"
+
+  tags = {
+    Name = "clouddesk-eip"
+  }
+}
